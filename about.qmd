@@ -1,0 +1,20 @@
+---
+title: "Home"
+format: html
+---
+
+![](images/IMG_4419.jpg){width="150px"}
+
+## Career Aspiration
+I aspire to become a university lecturer, sharing knowledge in data science and interactive web applications.
+
+## Skills
+-   R & Quarto dashboarding
+-   Shiny app development
+-   Data visualization (ggplot2 & Plotly)
+-   Reactive programming
+-   WebAssembly & shinylive
+
+## Education
+-   **MBA (In progress)**, Cal poly pomona
+-   **BSc in International Business**,cal state, fullerton

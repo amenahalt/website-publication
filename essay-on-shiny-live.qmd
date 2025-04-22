@@ -1,0 +1,75 @@
+---
+title: "Essay on Shiny Live"
+format: html
+---
+
+# Lecture Notes: Introduction to Shiny Live
+
+In this section, we’ll explore **Shiny Live**, a serverless approach to running Shiny applications directly in the browser. You’ll learn what Shiny Live is, how it differs from traditional Shiny apps, and the advantages and limitations of this new technology.
+
+------------------------------------------------------------------------
+
+## 1. What Is Shiny Live?
+
+Shiny Live (also called **shinylive**) is an R package and runtime that compiles R code to WebAssembly, allowing Shiny apps to run entirely in the user’s browser without any R server. It leverages technologies like **WebAssembly** and **Emscripten** to bring the R interpreter to the client side.
+
+**Key points:** - All R computations happen in the browser’s sandbox. - No need to maintain or pay for a dedicated Shiny server. - Users load the app’s JavaScript bundle and WebAssembly module, then interact directly with the app.
+
+**Reference video:** https://youtu.be/yAIvQrjlvbU?si=wH-9852yUNsWi6ku
+
+------------------------------------------------------------------------
+
+## 2. Traditional Shiny vs. Shiny Live
+
+| Feature | Traditional Shiny | Shiny Live |
+|----------------------|-----------------------|---------------------------|
+| Execution location | Server (R process) | Client (browser via WebAssembly) |
+| Deployment requirements | Shiny Server or RStudio Connect | Static hosting (GitHub Pages, Netlify, etc.) |
+| Scalability | Tied to server resources | Scales automatically (per user browser) |
+| Latency | Network round-trip | Immediate (no server round-trip) |
+| Resource limits | Controlled by server | Constrained by browser memory and CPU |
+
+------------------------------------------------------------------------
+
+## 3. How Shiny Live Works
+
+1.  **Compilation to WebAssembly**\
+    The R interpreter and required packages are compiled into a WebAssembly module.
+
+2.  **Client‑side Runtime**\
+    When a user opens a Shiny Live app, the browser downloads the WebAssembly file and JavaScript glue code.
+
+3.  **Reactive Engine in Browser**\
+    The Shiny reactivity engine runs in the browser, processing inputs and updating outputs without contacting a remote server.
+
+------------------------------------------------------------------------
+
+## 4. Pros of Shiny Live
+
+-   **Serverless Deployment**: Host on any static site—no Shiny Server needed.
+-   **Cost Savings**: No server infrastructure to maintain or pay for.
+-   **Offline Capability**: Apps can work offline once assets are cached.
+-   **Instant Interactivity**: Eliminates network latency for input/output updates.
+
+------------------------------------------------------------------------
+
+## 5. Cons of Shiny Live
+
+-   **Browser Resource Constraints**: Limited CPU, memory, and storage in the browser environment.
+-   **Package Support**: Not all CRAN packages compile to WebAssembly; some dependencies (e.g., binary extensions) may not work.
+-   **Startup Time**: Initial download of the WebAssembly module can be large, leading to slower app load.
+-   **Security Model**: Runs in a sandboxed environment—no file system or server access.
+
+------------------------------------------------------------------------
+
+## 6. When to Use Shiny Live
+
+-   **Educational Demos**: Quick prototypes or teaching examples where ease of deployment matters.
+-   **Interactive Tutorials**: Embed small apps in documentation without server overhead.
+-   **Offline or Limited Connectivity**: Apps that need to function even when offline.
+
+For production-grade analytics or apps requiring heavy computation or secure data access, a traditional Shiny server may still be the better choice.
+
+------------------------------------------------------------------------
+
+**Conclusion:** Shiny Live opens up new possibilities for lightweight, serverless R applications. While it comes with trade‑offs in performance and package availability, its zero‑server footprint and ease of deployment make it a compelling option for many interactive use cases.

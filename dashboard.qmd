@@ -1,0 +1,107 @@
+---
+title: "Iris Dataset Dashboard"
+format:
+  dashboard:
+    orientation: columns
+    vertical_layout: fill
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+```{r setup}
+# load libraries and data
+library(tidyverse)
+library(gt)
+library(plotly)
+data(iris)
+```
+
+## Overview {.dashboard-row}
+
+### Key Metrics {.dashboard-card}
+
+```{r}
+iris %>%
+  summarise(
+    `Total Observations` = n(),
+    `Number of Species` = n_distinct(Species)
+  ) %>%
+  gt() %>%
+  tab_header(title = "Dataset Overview") %>%
+  tab_options(table.width = "100%")
+
+```
+
+### Species Breakdown {.dashboard-card}
+
+```{r}
+iris %>%
+  count(Species) %>%
+  gt() %>%
+  tab_header(title = "Counts by Species") %>%
+  tab_options(table.width = "100%")
+
+```
+
+## Visualizations {.dashboard-row}
+
+### Sepal Length vs. Sepal Width {.dashboard-card}
+
+```{r}
+plot_ly(
+  data = iris,
+  x = ~Sepal.Length, 
+  y = ~Sepal.Width, 
+  color = ~Species,
+  type = "scatter", 
+  mode = "markers",
+  marker = list(size = 10)
+) %>%
+  layout(
+    title = "Sepal Length vs. Width",
+    xaxis = list(title = "Sepal Length (cm)"),
+    yaxis = list(title = "Sepal Width (cm)")
+  )
+
+```
+
+### Petal Length Distribution {.dashboard-card}
+
+```{r}
+plot_ly(
+  data = iris, 
+  x = ~Petal.Length, 
+  color = ~Species,
+  type = "histogram",
+  nbinsx = 15
+) %>%
+  layout(
+    title = "Petal Length Distribution",
+    xaxis = list(title = "Petal Length (cm)"),
+    yaxis = list(title = "Frequency")
+  )
+
+```
+
+## Exploratory Analysis {.dashboard-row}
+
+### Pairwise Scatter Matrix {.dashboard-card span="2"}
+
+```{r}
+# span=2 makes this card full-width
+plot_ly(
+  data = iris, 
+  type = "splom",
+  dimensions = list(
+    list(label = "Sepal.Length", values = iris$Sepal.Length),
+    list(label = "Sepal.Width",  values = iris$Sepal.Width),
+    list(label = "Petal.Length", values = iris$Petal.Length),
+    list(label = "Petal.Width",  values = iris$Petal.Width)
+  ),
+  color = iris$Species
+) %>%
+  layout(title = "Pairwise Scatter Matrix")
+
+```

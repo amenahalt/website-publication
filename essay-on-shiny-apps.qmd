@@ -1,0 +1,120 @@
+---
+title: "Essay on Shiny Apps"
+format: html
+---
+
+# Lecture Notes: Introduction to Shiny Apps
+
+In this lecture, we’ll explore how to build interactive web applications using R and Shiny. By the end, you’ll understand the core structure of a Shiny app, how reactive programming works, and you’ll follow along two video tutorials to see it in action.
+
+------------------------------------------------------------------------
+
+## 1. What Is Shiny?
+
+Shiny is an R package that makes it easy to build interactive web apps straight from R. Instead of exporting static plots or tables, Shiny apps let users manipulate inputs (sliders, dropdowns, checkboxes) and instantly see the results in the browser.
+
+**Key benefits:** - **Immediate feedback:** Users control inputs and see outputs update in real time. - **No web development needed:** You don’t need HTML, CSS or JavaScript to get started. - **Extensible:** As you grow more comfortable, you can add custom JavaScript or CSS.
+
+------------------------------------------------------------------------
+
+## 2. Anatomy of a Shiny App
+
+Every Shiny app has two main parts, usually stored in **`ui.R`** and **`server.R`**, or combined in a single **`app.R`** file.
+
+1.  **UI (User Interface)**
+    -   Defines what the app looks like: layout, inputs (e.g., `sliderInput`, `selectInput`), and outputs (e.g., `plotOutput`, `tableOutput`).
+    -   Written as a call to `fluidPage()`, `navbarPage()`, `dashboardPage()`, etc.
+2.  **Server**
+    -   Contains the logic that runs on the server side. It tells the app how to respond when inputs change.
+    -   Defines **reactive expressions** and **render functions** (e.g., `renderPlot({ ... })`, `renderTable({ ... })`).
+3.  **Reactive Concepts**
+    -   **Reactive values:** Variables that automatically update when inputs change.
+    -   **Observers:** Code that runs for side effects (e.g., updating a database).
+    -   **Reactivity graph:** Shiny tracks dependencies and only re-executes code when its inputs change.
+
+------------------------------------------------------------------------
+
+## 3. Walkthrough: Building Your First Shiny App
+
+### Video 1: "Shiny Basics: From R Script to Web App"
+
+Link: https://youtu.be/UGTTqhxaICU?si=-GlKfp8p2CVl0vJO
+
+1.  **Setup**
+
+    -   Install and load the **`shiny`** package.
+    -   Create a new file named **`app.R`**.
+
+2.  **UI Code**
+
+    ``` r
+    library(shiny)
+
+    ui <- fluidPage(
+      titlePanel("Hello Shiny!"),
+      sidebarLayout(
+        sidebarPanel(
+          sliderInput("obs", "Number of observations:",
+                      min = 1, max = 100, value = 50)
+        ),
+        mainPanel(
+          plotOutput("distPlot")
+        )
+      )
+    )
+    ```
+
+3.  **Server Code**
+
+    ``` r
+    server <- function(input, output) {
+      output$distPlot <- renderPlot({
+        hist(rnorm(input$obs), col = 'skyblue',
+             main = 'Random Normal Distribution')
+      })
+    }
+    ```
+
+4.  **Run the App**
+
+    ``` r
+    shinyApp(ui = ui, server = server)
+    ```
+
+As you move the slider, the histogram automatically redraws with the specified number of random points.
+
+------------------------------------------------------------------------
+
+## 4. Deep Dive: UI & Server Details
+
+### Video 2: "Shiny Inputs, Outputs, and Reactivity"
+
+Link: https://youtu.be/po1gspivzew?si=jbyJ2Dvv3YFTgq4r
+
+1.  **Input Widgets**
+    -   Examples: `numericInput()`, `textInput()`, `checkboxGroupInput()`, `dateRangeInput()`.
+    -   Each widget has an **`inputId`**, a **label**, and configuration options.
+2.  **Output Functions**
+    -   Examples: `plotOutput()`, `textOutput()`, `tableOutput()`, `verbatimTextOutput()`.
+    -   In the server, match them with `renderPlot()`, `renderText()`, `renderTable()`, `renderPrint()`.
+3.  **Reactive Expressions**
+    -   Use `reactive({ ... })` to wrap expensive computations that depend on inputs.
+    -   Call them like functions: `myData <- reactive({ ... })` then inside another render: `plot(myData())`.
+4.  **Isolating and Invalidating**
+    -   `isolate()`: Prevent reactivity inside a reactive context.
+    -   `invalidateLater()`: Automatically re-run code after a set time.
+5.  **Modularizing Your App**
+    -   For larger apps, split UI/server into modules with `moduleServer()` and `callModule()`.
+    -   Improves readability and testing.
+
+------------------------------------------------------------------------
+
+## 5. Best Practices & Tips
+
+-   **Keep UI simple**: Start with basic layouts and add complexity gradually.
+-   **Name inputs/outputs clearly**: Use meaningful `inputId`/`outputId` so you don’t get lost.
+-   **Limit reactivity scope**: Wrap only what needs to update inside `reactive()` to improve performance.
+-   **Use modules for scale**: Break large apps into smaller, testable pieces.
+-   **Style with CSS**: Add custom styles in a `www/` folder if needed.
+
+------------------------------------------------------------------------

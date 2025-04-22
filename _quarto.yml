@@ -1,0 +1,15 @@
+project: 
+  type: website
+  output-dir: docs        # build output to docs/ for GitHub Pages
+
+  title: "M10 Quarto Website"
+  navbar:
+    left:
+      - text: "Home"
+        href: index.html
+      - text: "Dashboard"
+        href: dashboard.html
+      - text: "Shiny Apps"
+        href: essay-on-shiny-apps.html
+      - text: "Shiny Live"
+        href: essay-on-shiny-live.html
