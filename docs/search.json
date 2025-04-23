@@ -1,0 +1,114 @@
+[
+  {
+    "objectID": "essay-on-shiny-apps.html",
+    "href": "essay-on-shiny-apps.html",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "In this lecture, we’ll explore how to build interactive web applications using R and Shiny. By the end, you’ll understand the core structure of a Shiny app, how reactive programming works, and you’ll follow along two video tutorials to see it in action.\n\n\n\nShiny is an R package that makes it easy to build interactive web apps straight from R. Instead of exporting static plots or tables, Shiny apps let users manipulate inputs (sliders, dropdowns, checkboxes) and instantly see the results in the browser.\nKey benefits: - Immediate feedback: Users control inputs and see outputs update in real time. - No web development needed: You don’t need HTML, CSS or JavaScript to get started. - Extensible: As you grow more comfortable, you can add custom JavaScript or CSS.\n\n\n\n\nEvery Shiny app has two main parts, usually stored in ui.R and server.R, or combined in a single app.R file.\n\nUI (User Interface)\n\nDefines what the app looks like: layout, inputs (e.g., sliderInput, selectInput), and outputs (e.g., plotOutput, tableOutput).\nWritten as a call to fluidPage(), navbarPage(), dashboardPage(), etc.\n\nServer\n\nContains the logic that runs on the server side. It tells the app how to respond when inputs change.\nDefines reactive expressions and render functions (e.g., renderPlot({ ... }), renderTable({ ... })).\n\nReactive Concepts\n\nReactive values: Variables that automatically update when inputs change.\nObservers: Code that runs for side effects (e.g., updating a database).\nReactivity graph: Shiny tracks dependencies and only re-executes code when its inputs change.\n\n\n\n\n\n\n\n\nLink: https://youtu.be/UGTTqhxaICU?si=-GlKfp8p2CVl0vJO\n\nSetup\n\nInstall and load the shiny package.\nCreate a new file named app.R.\n\nUI Code\nlibrary(shiny)\n\nui &lt;- fluidPage(\n  titlePanel(\"Hello Shiny!\"),\n  sidebarLayout(\n    sidebarPanel(\n      sliderInput(\"obs\", \"Number of observations:\",\n                  min = 1, max = 100, value = 50)\n    ),\n    mainPanel(\n      plotOutput(\"distPlot\")\n    )\n  )\n)\nServer Code\nserver &lt;- function(input, output) {\n  output$distPlot &lt;- renderPlot({\n    hist(rnorm(input$obs), col = 'skyblue',\n         main = 'Random Normal Distribution')\n  })\n}\nRun the App\nshinyApp(ui = ui, server = server)\n\nAs you move the slider, the histogram automatically redraws with the specified number of random points.\n\n\n\n\n\n\n\nLink: https://youtu.be/po1gspivzew?si=jbyJ2Dvv3YFTgq4r\n\nInput Widgets\n\nExamples: numericInput(), textInput(), checkboxGroupInput(), dateRangeInput().\nEach widget has an inputId, a label, and configuration options.\n\nOutput Functions\n\nExamples: plotOutput(), textOutput(), tableOutput(), verbatimTextOutput().\nIn the server, match them with renderPlot(), renderText(), renderTable(), renderPrint().\n\nReactive Expressions\n\nUse reactive({ ... }) to wrap expensive computations that depend on inputs.\nCall them like functions: myData &lt;- reactive({ ... }) then inside another render: plot(myData()).\n\nIsolating and Invalidating\n\nisolate(): Prevent reactivity inside a reactive context.\ninvalidateLater(): Automatically re-run code after a set time.\n\nModularizing Your App\n\nFor larger apps, split UI/server into modules with moduleServer() and callModule().\nImproves readability and testing.\n\n\n\n\n\n\n\n\nKeep UI simple: Start with basic layouts and add complexity gradually.\nName inputs/outputs clearly: Use meaningful inputId/outputId so you don’t get lost.\nLimit reactivity scope: Wrap only what needs to update inside reactive() to improve performance.\nUse modules for scale: Break large apps into smaller, testable pieces.\nStyle with CSS: Add custom styles in a www/ folder if needed."
+  },
+  {
+    "objectID": "essay-on-shiny-apps.html#what-is-shiny",
+    "href": "essay-on-shiny-apps.html#what-is-shiny",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "Shiny is an R package that makes it easy to build interactive web apps straight from R. Instead of exporting static plots or tables, Shiny apps let users manipulate inputs (sliders, dropdowns, checkboxes) and instantly see the results in the browser.\nKey benefits: - Immediate feedback: Users control inputs and see outputs update in real time. - No web development needed: You don’t need HTML, CSS or JavaScript to get started. - Extensible: As you grow more comfortable, you can add custom JavaScript or CSS."
+  },
+  {
+    "objectID": "essay-on-shiny-apps.html#anatomy-of-a-shiny-app",
+    "href": "essay-on-shiny-apps.html#anatomy-of-a-shiny-app",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "Every Shiny app has two main parts, usually stored in ui.R and server.R, or combined in a single app.R file.\n\nUI (User Interface)\n\nDefines what the app looks like: layout, inputs (e.g., sliderInput, selectInput), and outputs (e.g., plotOutput, tableOutput).\nWritten as a call to fluidPage(), navbarPage(), dashboardPage(), etc.\n\nServer\n\nContains the logic that runs on the server side. It tells the app how to respond when inputs change.\nDefines reactive expressions and render functions (e.g., renderPlot({ ... }), renderTable({ ... })).\n\nReactive Concepts\n\nReactive values: Variables that automatically update when inputs change.\nObservers: Code that runs for side effects (e.g., updating a database).\nReactivity graph: Shiny tracks dependencies and only re-executes code when its inputs change."
+  },
+  {
+    "objectID": "essay-on-shiny-apps.html#walkthrough-building-your-first-shiny-app",
+    "href": "essay-on-shiny-apps.html#walkthrough-building-your-first-shiny-app",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "Link: https://youtu.be/UGTTqhxaICU?si=-GlKfp8p2CVl0vJO\n\nSetup\n\nInstall and load the shiny package.\nCreate a new file named app.R.\n\nUI Code\nlibrary(shiny)\n\nui &lt;- fluidPage(\n  titlePanel(\"Hello Shiny!\"),\n  sidebarLayout(\n    sidebarPanel(\n      sliderInput(\"obs\", \"Number of observations:\",\n                  min = 1, max = 100, value = 50)\n    ),\n    mainPanel(\n      plotOutput(\"distPlot\")\n    )\n  )\n)\nServer Code\nserver &lt;- function(input, output) {\n  output$distPlot &lt;- renderPlot({\n    hist(rnorm(input$obs), col = 'skyblue',\n         main = 'Random Normal Distribution')\n  })\n}\nRun the App\nshinyApp(ui = ui, server = server)\n\nAs you move the slider, the histogram automatically redraws with the specified number of random points."
+  },
+  {
+    "objectID": "essay-on-shiny-apps.html#deep-dive-ui-server-details",
+    "href": "essay-on-shiny-apps.html#deep-dive-ui-server-details",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "Link: https://youtu.be/po1gspivzew?si=jbyJ2Dvv3YFTgq4r\n\nInput Widgets\n\nExamples: numericInput(), textInput(), checkboxGroupInput(), dateRangeInput().\nEach widget has an inputId, a label, and configuration options.\n\nOutput Functions\n\nExamples: plotOutput(), textOutput(), tableOutput(), verbatimTextOutput().\nIn the server, match them with renderPlot(), renderText(), renderTable(), renderPrint().\n\nReactive Expressions\n\nUse reactive({ ... }) to wrap expensive computations that depend on inputs.\nCall them like functions: myData &lt;- reactive({ ... }) then inside another render: plot(myData()).\n\nIsolating and Invalidating\n\nisolate(): Prevent reactivity inside a reactive context.\ninvalidateLater(): Automatically re-run code after a set time.\n\nModularizing Your App\n\nFor larger apps, split UI/server into modules with moduleServer() and callModule().\nImproves readability and testing."
+  },
+  {
+    "objectID": "essay-on-shiny-apps.html#best-practices-tips",
+    "href": "essay-on-shiny-apps.html#best-practices-tips",
+    "title": "Essay on Shiny Apps",
+    "section": "",
+    "text": "Keep UI simple: Start with basic layouts and add complexity gradually.\nName inputs/outputs clearly: Use meaningful inputId/outputId so you don’t get lost.\nLimit reactivity scope: Wrap only what needs to update inside reactive() to improve performance.\nUse modules for scale: Break large apps into smaller, testable pieces.\nStyle with CSS: Add custom styles in a www/ folder if needed."
+  },
+  {
+    "objectID": "essay-on-shiny-live.html",
+    "href": "essay-on-shiny-live.html",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "In this section, we’ll explore Shiny Live, a serverless approach to running Shiny applications directly in the browser. You’ll learn what Shiny Live is, how it differs from traditional Shiny apps, and the advantages and limitations of this new technology.\n\n\n\nShiny Live (also called shinylive) is an R package and runtime that compiles R code to WebAssembly, allowing Shiny apps to run entirely in the user’s browser without any R server. It leverages technologies like WebAssembly and Emscripten to bring the R interpreter to the client side.\nKey points: - All R computations happen in the browser’s sandbox. - No need to maintain or pay for a dedicated Shiny server. - Users load the app’s JavaScript bundle and WebAssembly module, then interact directly with the app.\nReference video: https://youtu.be/yAIvQrjlvbU?si=wH-9852yUNsWi6ku\n\n\n\n\n\n\n\n\n\n\n\n\nFeature\nTraditional Shiny\nShiny Live\n\n\n\n\nExecution location\nServer (R process)\nClient (browser via WebAssembly)\n\n\nDeployment requirements\nShiny Server or RStudio Connect\nStatic hosting (GitHub Pages, Netlify, etc.)\n\n\nScalability\nTied to server resources\nScales automatically (per user browser)\n\n\nLatency\nNetwork round-trip\nImmediate (no server round-trip)\n\n\nResource limits\nControlled by server\nConstrained by browser memory and CPU\n\n\n\n\n\n\n\n\nCompilation to WebAssembly\nThe R interpreter and required packages are compiled into a WebAssembly module.\nClient‑side Runtime\nWhen a user opens a Shiny Live app, the browser downloads the WebAssembly file and JavaScript glue code.\nReactive Engine in Browser\nThe Shiny reactivity engine runs in the browser, processing inputs and updating outputs without contacting a remote server.\n\n\n\n\n\n\nServerless Deployment: Host on any static site—no Shiny Server needed.\nCost Savings: No server infrastructure to maintain or pay for.\nOffline Capability: Apps can work offline once assets are cached.\nInstant Interactivity: Eliminates network latency for input/output updates.\n\n\n\n\n\n\nBrowser Resource Constraints: Limited CPU, memory, and storage in the browser environment.\nPackage Support: Not all CRAN packages compile to WebAssembly; some dependencies (e.g., binary extensions) may not work.\nStartup Time: Initial download of the WebAssembly module can be large, leading to slower app load.\nSecurity Model: Runs in a sandboxed environment—no file system or server access.\n\n\n\n\n\n\nEducational Demos: Quick prototypes or teaching examples where ease of deployment matters.\nInteractive Tutorials: Embed small apps in documentation without server overhead.\nOffline or Limited Connectivity: Apps that need to function even when offline.\n\nFor production-grade analytics or apps requiring heavy computation or secure data access, a traditional Shiny server may still be the better choice.\n\nConclusion: Shiny Live opens up new possibilities for lightweight, serverless R applications. While it comes with trade‑offs in performance and package availability, its zero‑server footprint and ease of deployment make it a compelling option for many interactive use cases."
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#what-is-shiny-live",
+    "href": "essay-on-shiny-live.html#what-is-shiny-live",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Shiny Live (also called shinylive) is an R package and runtime that compiles R code to WebAssembly, allowing Shiny apps to run entirely in the user’s browser without any R server. It leverages technologies like WebAssembly and Emscripten to bring the R interpreter to the client side.\nKey points: - All R computations happen in the browser’s sandbox. - No need to maintain or pay for a dedicated Shiny server. - Users load the app’s JavaScript bundle and WebAssembly module, then interact directly with the app.\nReference video: https://youtu.be/yAIvQrjlvbU?si=wH-9852yUNsWi6ku"
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#traditional-shiny-vs.-shiny-live",
+    "href": "essay-on-shiny-live.html#traditional-shiny-vs.-shiny-live",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Feature\nTraditional Shiny\nShiny Live\n\n\n\n\nExecution location\nServer (R process)\nClient (browser via WebAssembly)\n\n\nDeployment requirements\nShiny Server or RStudio Connect\nStatic hosting (GitHub Pages, Netlify, etc.)\n\n\nScalability\nTied to server resources\nScales automatically (per user browser)\n\n\nLatency\nNetwork round-trip\nImmediate (no server round-trip)\n\n\nResource limits\nControlled by server\nConstrained by browser memory and CPU"
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#how-shiny-live-works",
+    "href": "essay-on-shiny-live.html#how-shiny-live-works",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Compilation to WebAssembly\nThe R interpreter and required packages are compiled into a WebAssembly module.\nClient‑side Runtime\nWhen a user opens a Shiny Live app, the browser downloads the WebAssembly file and JavaScript glue code.\nReactive Engine in Browser\nThe Shiny reactivity engine runs in the browser, processing inputs and updating outputs without contacting a remote server."
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#pros-of-shiny-live",
+    "href": "essay-on-shiny-live.html#pros-of-shiny-live",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Serverless Deployment: Host on any static site—no Shiny Server needed.\nCost Savings: No server infrastructure to maintain or pay for.\nOffline Capability: Apps can work offline once assets are cached.\nInstant Interactivity: Eliminates network latency for input/output updates."
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#cons-of-shiny-live",
+    "href": "essay-on-shiny-live.html#cons-of-shiny-live",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Browser Resource Constraints: Limited CPU, memory, and storage in the browser environment.\nPackage Support: Not all CRAN packages compile to WebAssembly; some dependencies (e.g., binary extensions) may not work.\nStartup Time: Initial download of the WebAssembly module can be large, leading to slower app load.\nSecurity Model: Runs in a sandboxed environment—no file system or server access."
+  },
+  {
+    "objectID": "essay-on-shiny-live.html#when-to-use-shiny-live",
+    "href": "essay-on-shiny-live.html#when-to-use-shiny-live",
+    "title": "Essay on Shiny Live",
+    "section": "",
+    "text": "Educational Demos: Quick prototypes or teaching examples where ease of deployment matters.\nInteractive Tutorials: Embed small apps in documentation without server overhead.\nOffline or Limited Connectivity: Apps that need to function even when offline.\n\nFor production-grade analytics or apps requiring heavy computation or secure data access, a traditional Shiny server may still be the better choice.\n\nConclusion: Shiny Live opens up new possibilities for lightweight, serverless R applications. While it comes with trade‑offs in performance and package availability, its zero‑server footprint and ease of deployment make it a compelling option for many interactive use cases."
+  },
+  {
+    "objectID": "about.html#career-aspiration",
+    "href": "about.html#career-aspiration",
+    "title": "Home",
+    "section": "Career Aspiration",
+    "text": "Career Aspiration\nI aspire to become a university lecturer, sharing knowledge in data science and interactive web applications."
+  },
+  {
+    "objectID": "about.html#skills",
+    "href": "about.html#skills",
+    "title": "Home",
+    "section": "Skills",
+    "text": "Skills\n\nR & Quarto dashboarding\nShiny app development\nData visualization (ggplot2 & Plotly)\nReactive programming\nWebAssembly & shinylive"
+  },
+  {
+    "objectID": "about.html#education",
+    "href": "about.html#education",
+    "title": "Home",
+    "section": "Education",
+    "text": "Education\n\nMBA (In progress), Cal poly pomona\nBSc in International Business,cal state, fullerton"
+  }
+]
